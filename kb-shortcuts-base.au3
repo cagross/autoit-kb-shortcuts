@@ -14,6 +14,7 @@ Local $kb_flw = "!^f"; define keyboard shortcut to insert 'Here are my follow-up
 Local $kb_out_task = "!^p"; define keyboard shortcut to create Outlook task. Uses ctrl+alt+p.
 Local $kb_sxy = "!^k"; define keyboard shortcut to toggle ShareX border color between red and yellow. Uses ctrl+alt+k.
 Local $kb_sxb = "!^v"; define keyboard shortcut to toggle ShareX border size between 1 and 5. Uses ctrl+alt+v.
+Local $kb_rgx = "!^g"; define keyboard shortcut to insert multi-search regex. Uses ctrl+alt+g.
 
 HotKeySet($kb_sal, "send_sal")
 HotKeySet($kb_sau, "send_sau")
@@ -28,6 +29,8 @@ HotKeySet($kb_flw, "send_flw")
 HotKeySet($kb_out_task, "out_task")
 HotKeySet($kb_sxy, "send_sxy")
 HotKeySet($kb_sxb, "send_sxb")
+HotKeySet($kb_rgx, "send_rgx")
+
 
 While 1
     Sleep(100)
@@ -159,4 +162,10 @@ Func send_sxb(); Check value of ShareX border size.  If 5, change to 1.  Otherwi
 	Local $controlSend = ControlSend("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11", "{TAB}{ESC}")
 	ConsoleWrite("$controlSend: " & $controlSend & @CRLF)
 	HotKeySet($kb_sxb, "send_sxb"); reactivate it
+EndFunc
+
+Func send_rgx()
+	HotKeySet($kb_rgx) ; deactivate the hotkey in case the user presses it too long
+	Send("(grid[\s\S\n]*ow6)|(ow6[\s\S\n]*grid)"); Send text to the active window.
+	HotKeySet($kb_rgx, "send_rgx") ; reactivate it
 EndFunc
