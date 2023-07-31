@@ -93,7 +93,7 @@ EndFunc
 Func send_flw()
 	HotKeySet($kb_flw) ; deactivate the hotkey in case the user presses it too long
 	Send("Here are my follow-ups.")
-	HotKeySet($kb_tyv, "send_flw") ; reactivate it
+	HotKeySet($kb_flw, "send_flw") ; reactivate it
 EndFunc
 
 Func out_task()
