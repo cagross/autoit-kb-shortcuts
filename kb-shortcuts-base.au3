@@ -135,20 +135,24 @@ Func send_sxb(); Check value of ShareX border size.  If 5, change to 1.  Otherwi
 	Local $aArea[] = [1325, 24, 1378, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
 	Local $SearchColor = 0x778797 ;This is one color in the 'Tool options' button, that should not be in the second button in the search area.
 	Local $aCoord = PixelSearch($aArea[0], $aArea[1], $aArea[2], $aArea[3], $SearchColor, 6); Find the exact coordinate of the pixel containing the above color.
+	Local Const $offSetConst = 415
+	Local $offSet
 	If @error Then
 		ConsoleWrite("! Error X and Y" & @CRLF)
 	Else
 		ConsoleWrite("Pixel Found at  X and Y are: " & $aCoord[0] & "," & $aCoord[1] & @CRLF)
-		If $aCoord[0] > 1354 Then ; I guess +70 for you = 1370
+		If $aCoord[0] > 1375 Then ; I guess +70 for you = 1370
 			$sActiveTool = "Rectangle"
+			$offSet = $offSetConst
 		Else
 			$sActiveTool = "Arrow"
+			$offSet = $offSetConst + 50
 		EndIf
 		ConsoleWrite("$sActiveTool: " & $sActiveTool & @CRLF)
 	EndIf
 
 	; Click the pixel corresponding to Tool options button.
-	Local $controlClick = ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, $aCoord[0]-416, $iSZ)
+	Local $controlClick = ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, $aCoord[0]-$offSet, $iSZ)
 	ConsoleWrite("$controlClick: " & $controlClick & @CRLF)
 
 	Local $iBorderSize = Int(ControlGetText("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11"))
