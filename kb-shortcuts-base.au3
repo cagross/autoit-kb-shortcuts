@@ -132,21 +132,19 @@ Func send_sxb(); Check value of ShareX border size.  If 5, change to 1.  Otherwi
 	Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
 	Local $aWinPos = WinGetPos($hWnd)
 	Local Const $iSZ = $aWinPos[3] / 2 ; - 16
-	Local $aArea[] = [1325, 24, 1378, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
+	;Local $aArea[] = [1325, 24, 1378, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
+	Local $aArea[] = [1325, 24, 1410, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
 	Local $SearchColor = 0x778797 ;This is one color in the 'Tool options' button, that should not be in the second button in the search area.
 	Local $aCoord = PixelSearch($aArea[0], $aArea[1], $aArea[2], $aArea[3], $SearchColor, 6); Find the exact coordinate of the pixel containing the above color.
-	Local Const $offSetConst = 415
-	Local $offSet
+	Local Const $offSet = 415 + 50
 	If @error Then
 		ConsoleWrite("! Error X and Y" & @CRLF)
 	Else
 		ConsoleWrite("Pixel Found at  X and Y are: " & $aCoord[0] & "," & $aCoord[1] & @CRLF)
 		If $aCoord[0] > 1375 Then ; I guess +70 for you = 1370
 			$sActiveTool = "Rectangle"
-			$offSet = $offSetConst
 		Else
 			$sActiveTool = "Arrow"
-			$offSet = $offSetConst + 50
 		EndIf
 		ConsoleWrite("$sActiveTool: " & $sActiveTool & @CRLF)
 	EndIf
