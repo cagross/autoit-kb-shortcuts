@@ -4,7 +4,7 @@ Opt("SendKeyDownDelay", 0) ; 0 removes completely the delay
 
 Local $kb_uri = "!^r"; define keyboard shortcut to insert 'understand issue'  Uses ctrl+alt+r.
 Local $kb_dwt = "!^i"; define keyboard shortcut to insert 'discuss with team'  Uses ctrl+alt+i.
-Local $kb_atr = "!^m"; define keyboard shortcut to insert 'attempt to reproduce'  Uses ctrl+alt+m.
+Local $kb_atr = "!^l"; define keyboard shortcut to insert 'attempt to reproduce'  Uses ctrl+alt+l.
 Local $kb_out_task_ticket = "!^a"; define keyboard shortcut to create Outlook task. Uses ctrl+alt+p.
 Local $kb_crv = "!^c"; define keyboard shortcut to insert 'Changeset/Resolution/Verfication. Uses ctrl+alt+c.
 Local $kb_upt = "!^u"; define keyboard shortcut to insert 'update ticket.' Uses ctrl+alt+u
