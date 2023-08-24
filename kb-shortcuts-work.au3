@@ -76,10 +76,10 @@ Func out_task_ticket()
 	Local $regSetting = "If I add, modify, or delete a reg setting, add that info to CR Release Notes section."
 	Local $sprintRetro = "Note what went well and what could be improved. Add those to sprint retrospective task."
 	Local $sSql = "If task required modification of database (either editing schema or data), be sure to take correct action. That action is:{ENTER}{TAB}Compose the SQL statement you think will accomplish what you want.{ENTER}Send it to Jaheer for his approval. Do not continue without his approval.{ENTER}Find the SharePoint folder for Internal Releases, then find the folder for the release in-question. In that folder, should be folders for DB Schema Scripts and DB SQL Scripts. The former is for schema edits (add SQL to Word documents that are already int he folder) and the latter is for data edits (add specific .sql files containing your script). Open the desired folder."
-	Local $createPr = "Wait for commits to be made in local feature branch.{ENTER}Rebase feature branch onto target branch if helpful/necessary.{ENTER}Create new PR by pushing feature to remote. Set auto-complete. In auto-complete, set auto-close work item in. That way, upon PR completion, the ticket State is auto-set to Resolved.{ENTER}Wait for PR to complete.{ENTER}"
+	Local $createPr = "Wait for commits to be made in local feature branch.{ENTER}Rebase feature branch onto target branch if helpful/necessary.{ENTER}Create new PR by pushing feature to remote. Set auto-complete. In auto-complete, do not set auto-close for work item. If I do, upon PR completion, the ticket State is auto-set to Resolved and QA will immediately begin testing.  That's not what I want.{ENTER}Wait for PR to complete.{ENTER}"
 	Local $dalFileEdits = "If edits to any DAL file method are needed, be sure to upgrade that method to use SQLx3, i.e. set clause.useSqlx3 to true."
-	Local $assignQa = "Assign to QA by doing the following.  After updating ADO work item with resolution/verification, ensure its State is marked as 'Resolved.'  If that doesn't happen automatically, do it manually.  After, do not do anything else, e.g. do not open board and drag ticket to 'In QA.'  Also, do not assign ticket to anyone else--leave it assigned to me. A member of QA should eventually pick it up and assign to themself."
-
+	Local $updateTicket = "Update ticket{ENTER}{TAB}Update ticket with resolution.{ENTER}Update ticket with verification steps. Be sure to add screenshots where helpful.{ENTER}Update ticket with release comment (in ADO, add this to the CR Release Notes section).{ENTER}" & $regSetting & "{ENTER}" & $sSql & "{ENTER}Ensure ticket resolution section describes the edit required.{ENTER}Ensure ticket verification section describes to QA the edit required, as well as where the script is located, and exactly what tables/columns are updated.  If not, QA will have problems knowing exactly what statement to execute.{ENTER}{ENTER}{ENTER}"
+	Local $assignQa = "Assign to QA by doing the following.  Ensure the State of the ADO work item is marked as 'Resolved.' After, do not do anything else, e.g. do not open board and drag ticket to 'In QA.'  Also, do not assign ticket to anyone else--leave it assigned to me. A member of QA should eventually pick it up and assign to themself."
 
 	SendEx("^b^uTask^u^b{ENTER}+8{space}{space}{ENTER}{ENTER}{ENTER}")
 	SendEx("^b^uTo Do^u^b{ENTER}+8{space}")
@@ -91,16 +91,14 @@ Func out_task_ticket()
     Sleep(100)
 	SendEx("Make edits{ENTER}{TAB}Check if ticket will require module conversion.  If so, and time permits, start with that.{ENTER}Try to use unit tests (maybe with ChatGPT){ENTER}" & $dalFileEdits & "{ENTER}Add JSDoc{ENTER}" & $sSecuritydalfunc & "Wait for sprint to officially start.{ENTER}Create local feature branch (syntax: feature/<number>) and commit edits there. If someone else made the edits (e.g. J), note that in the Git commit message.{ENTER}" & $sAppserveredits & "{Enter}{ENTER}")
     Sleep(100)
-	;~ SendEx("Wait for commits to be made in local feature branch.{ENTER}Rebase feature branch onto target branch if helpful/necessary.{ENTER}Create new PR by pushing feature to remote. Set auto-complete.{ENTER}Wait for PR to complete.{ENTER}")
 	SendEx($createPr)
     Sleep(100)
-	SendEx("Update ticket{ENTER}{TAB}Update ticket with resolution.{ENTER}Update ticket with verification steps. Be sure to add screenshots where helpful.{ENTER}Update ticket with release comment (in ADO, add this to the CR Release Notes section).{ENTER}" & $regSetting & "{ENTER}" & $sSql & "{ENTER}Ensure ticket resolution section describes the edit required.{ENTER}Ensure ticket verification section describes to QA the edit required, as well as where the script is located, and exactly what tables/columns are updated.  If not, QA will have problems knowing exactly what statement to execute.{ENTER}{ENTER}{ENTER}")
+	SendEx($updateTicket)
     Sleep(100)
 	SendEx($assignQa & "{ENTER}Wait for QA to pass.{ENTER}{ENTER}")
     Sleep(100)
 	SendEx("^b^uAfter^u^b{ENTER}+8{space}Delete unnecessary branches/stashes.{ENTER}Retire browser bookmark{ENTER}" & $sQamissed & "{ENTER}" & $sprintRetro & "{ENTER}{ENTER}")
 
-	
  ;~ Remove the part about module conversion.  Then, in R2 section, at start, add, “Check if ticket will require module conversion.  If so, and time permits, start with that.
 
 	HotKeySet($kb_out_task_ticket, "out_task_ticket") ; reactivate it
