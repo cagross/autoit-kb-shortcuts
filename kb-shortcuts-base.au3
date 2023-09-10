@@ -107,22 +107,40 @@ EndFunc
 
 Func send_sxy(); Check value of ShareX border color.  If yellow, change to red.  Otherwise, change to yellow.
 	HotKeySet($kb_sxy) ; deactivate the hotkey in case the user presses it too long
+	ConsoleWrite('111' & @CRLF)
 
 	Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
 	Local $aWinPos = WinGetPos($hWnd)
 	Local $hControl = ControlGetHandle($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11")
 	Local $Color = Hex(PixelGetColor($aWinPos[0] + 875, $aWinPos[1] + 20), 6)
-	ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, 875, 20)
-	WinWaitActive("ShareX - Color picker")
+	Local $cWnd
+
+	;~ ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, 875, 20)
+	ControlClick($hWnd, "", ControlGetHandle($hWnd, "", "[REGEXPCLASS:WindowsForms10\.Window\.8\.app\.0\.[a-z0-9]{7}_r6_ad\d*]"), "left", 1, 875, 20)
+	
+	;~ WinWaitActive("ShareX - Color picker")
+	$cWnd = WinWait("ShareX - Color picker", "", 3)
+	;~ $cWnd = WinWaitActive("ShareX - Color picker")
+
 
 	If $Color = 'FFD800' Then
-		ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad14'); Click red.
+		;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad14')); Click red.
+		Local $oWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:4]')
+		ControlClick($cWnd, '', $oWnd); Click red.
 	Else
-		ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad16'); Click yellow.
+		;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad16')); Click yellow.
+		Local $yWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:6]')
+		ControlClick($cWnd, '', $yWnd); Click yellow.
 	EndIf
 
-	ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad142'); Click color picker OK.
-
+	;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad142'))
+	Local $tWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:42]'); Click color picker OK.
+	If @error Then
+		ConsoleWrite("Error occurred. Error code: " & @error & @CRLF)
+	Else
+		ConsoleWrite("Control handle: " & $hWnd & @CRLF)
+	EndIf
+	ControlClick($cWnd, '', $tWnd)
 	HotKeySet($kb_sxy, "send_sxy") ; reactivate it
 EndFunc
 
