@@ -65,7 +65,8 @@ Func out_task_ticket()
 
 	HotKeySet($kb_out_task_ticket) ; deactivate the hotkey in case the user presses it too long
 	
-	Local $oneClick = "Add 1-click sub-task reminders to ADO ticket.{ENTER}{TAB}After{ENTER}{TAB}Set Coding sub-task to myself/Active.{ENTER}{ENTER}{ENTER}"
+	Local $oneClick = "Add 1-click sub-task reminders to ADO ticket."
+	Local $oneClickCoding = "Set Coding sub-task to myself/Active."
 	Local $sAppserveredits = "If this ticket requires App Server edits, be sure that if another dev uses my Orbis Web code edits, and does NOT have those App Server edits, that they will experience no crippling error.  In those cases, it is OK if my edits don't have the affect they should; but that dev should not be prevented from doing other development, i.e. there should be no errors thrown anywhere."
 	Local $sNetworkreqs = "If manual testing becomes tedious, consider reproducing the same action by making a network request in browser (or using Postman)."
 	Local $sourceBranch = "Before doing any debugging, be sure that I know the source branch beforehand.  If not, it can cause issues if I later have to migrate the edits to a different branch, which may not contain the same issues as my original branch."
@@ -84,12 +85,15 @@ Func out_task_ticket()
 	Sleep(200)
 	SendEx("^b^uTo Do^u^b{ENTER}+8{space}")
 	Sleep(200)
-	SendEx($oneClick)
+	SendEx($oneClick & "{ENTER}")
 	Sleep(200)
 	SendEx("Understand Issue{ENTER}")
 	SendEx("Repro{ENTER}{TAB}" & $sgCode & "{ENTER}{ENTER}")
     Sleep(200)
-	SendEx("Debug{ENTER}{TAB}" & $sNetworkreqs & "{ENTER}When I begin working on the ticket, open the scrum board and move the ticket to the In Dev column.{ENTER}" & $sourceBranch & "{ENTER}If helpful, try to use git bisect to determine the breaking commit.{ENTER}{ENTER}T: If ticket needs another team (e.g. SWAT) to obtain more info from customer, or ask customer to check some things on their end, move status to ‘In Review’ in the scrum board.{ENTER}")
+	;~ SendEx("Debug{ENTER}{TAB}" & $sNetworkreqs & "{ENTER}When I begin working on the ticket, open the scrum board and move the ticket to the In Dev column.{ENTER}" & $sourceBranch & "{ENTER}If helpful, try to use git bisect to determine the breaking commit.{ENTER}{ENTER}T: If ticket needs another team (e.g. SWAT) to obtain more info from customer, or ask customer to check some things on their end, move status to ‘In Review’ in the scrum board.{ENTER}")
+	SendEx("Debug{ENTER}{TAB}")
+	SendEx($oneClickCoding & "{ENTER}")
+	SendEx($sNetworkreqs & "{ENTER}When I begin working on the ticket, open the scrum board and move the ticket to the In Dev column.{ENTER}" & $sourceBranch & "{ENTER}If helpful, try to use git bisect to determine the breaking commit.{ENTER}{ENTER}T: If ticket needs another team (e.g. SWAT) to obtain more info from customer, or ask customer to check some things on their end, move status to ‘In Review’ in the scrum board.{ENTER}")
     Sleep(200)
 	SendEx("Make edits{ENTER}{TAB}Check if ticket will require module conversion.  If so, and time permits, start with that.{ENTER}Try to use unit tests (maybe with ChatGPT){ENTER}" & $dalFileEdits & "{ENTER}Add JSDoc{ENTER}" & $sSecuritydalfunc & "Wait for sprint to officially start.{ENTER}Create local feature branch (syntax: feature/<number>) and commit edits there. If someone else made the edits (e.g. J), note that in the Git commit message.{ENTER}" & $sAppserveredits & "{Enter}{ENTER}")
     Sleep(200)
