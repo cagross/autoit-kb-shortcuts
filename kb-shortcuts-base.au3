@@ -111,53 +111,34 @@ Func send_sxy(); Check value of ShareX border color.  If yellow, change to red. 
 
 	Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
 	Local $aWinPos = WinGetPos($hWnd)
-	Local $hControl = ControlGetHandle($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11")
 	Local $Color = Hex(PixelGetColor($aWinPos[0] + 875, $aWinPos[1] + 20), 6)
 	Local $cWnd
 
-	;~ ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, 875, 20)
-	ControlClick($hWnd, "", ControlGetHandle($hWnd, "", "[REGEXPCLASS:WindowsForms10\.Window\.8\.app\.0\.[a-z0-9]{7}_r6_ad\d*]"), "left", 1, 875, 20)
-	
-	;~ WinWaitActive("ShareX - Color picker")
-	$cWnd = WinWait("ShareX - Color picker", "", 3)
-	;~ $cWnd = WinWaitActive("ShareX - Color picker")
+	ConsoleWrite('ControlClick on Border color tile:' & @CRLF)
+	ConsoleWrite(ControlClick($hWnd, "", ControlGetHandle($hWnd, "", "[REGEXPCLASS:WindowsForms10\.Window\.8\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]"), "left", 1, 875, 20))
 
-
-Local $aWinPos = WinGetPos($hWnd)
+	Local $aWinPos = WinGetPos($hWnd)
+	ConsoleWrite('$aWinPos:' & @CRLF)
 	ConsoleWrite($aWinPos & @CRLF)
 
-;~ Local $hControl = ControlGetHandle($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11")
-Local $hControl = ControlGetHandle($hWnd, "", "WindowsForms10.Window.8.app.0.13f26d9_r6_ad11")
 
-	ConsoleWrite($hControl & @CRLF)
-
-Local $Color = Hex(PixelGetColor($aWinPos[0] + 875, $aWinPos[1] + 20), 6)
+	Local $Color = Hex(PixelGetColor($aWinPos[0] + 875, $aWinPos[1] + 20), 6)
+	ConsoleWrite('$Color:' & @CRLF)
 	ConsoleWrite($Color & @CRLF)
-
-;~ ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, 875, 20)
-;~ ConsoleWrite(ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, 875, 20) & @CRLF)
-ConsoleWrite(ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.13f26d9_r6_ad11", "left", 1, 875, 20) & @CRLF)
-
-WinWaitActive("ShareX - Color picker")
-
-;~ 	If $Color = 'FFD800' Then
-;~ 		ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad14'); Click red.
-;~ 	Else
-;~ 		ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad16'); Click yellow.
-;~ 	EndIf
-;~ 	ControlClick('ShareX - Color picker', '', 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad142'); Click color picker OK.
+	$cWnd = WinWaitActive("ShareX - Color picker", "", 3)
 	If $Color = 'FFD800' Then
-		;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad14')); Click red.
-		Local $oWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:4]')
-		ControlClick($cWnd, '', $oWnd); Click red.
+		ConsoleWrite('$oWnd:' & @CRLF)
+		Local $oWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r\d+_ad1; INSTANCE:4]')
+		ConsoleWrite('ControlClick on color:' & @CRLF)
+		ConsoleWrite(ControlClick($cWnd, '', $oWnd) & @CRLF); Click red.
 	Else
-		;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad16')); Click yellow.
-		Local $yWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:6]')
-		ControlClick($cWnd, '', $yWnd); Click yellow.
+		ConsoleWrite('$yWnd:' & @CRLF)
+		Local $yWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r\d+_ad1; INSTANCE:6]')
+		ConsoleWrite('ControlClick on color:' & @CRLF)
+		ConsoleWrite(ControlClick($cWnd, '', $yWnd) & @CRLF); Click yellow.
 	EndIf
 
-	;~ ControlClick($cWnd, '', ControlGetHandle($cWnd, "", 'WindowsForms10.BUTTON.app.0.1a52015_r6_ad142'))
-	Local $tWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r6_ad1; INSTANCE:42]'); Click color picker OK.
+	Local $tWnd = ControlGetHandle($cWnd, "", '[REGEXPCLASS:^WindowsForms10\.BUTTON\.app\.0\.1a52015_r\d+_ad1; INSTANCE:42]'); Click color picker OK.
 	If @error Then
 		ConsoleWrite("Error occurred. Error code: " & @error & @CRLF)
 	Else
