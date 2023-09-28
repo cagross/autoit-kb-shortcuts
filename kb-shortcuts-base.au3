@@ -107,7 +107,7 @@ EndFunc
 
 Func send_sxy(); Check value of ShareX border color.  If yellow, change to red.  Otherwise, change to yellow.
 	HotKeySet($kb_sxy) ; deactivate the hotkey in case the user presses it too long
-	ConsoleWrite('111' & @CRLF)
+	ConsoleWrite('Start ShareX border color kb shortcut.' & @CRLF)
 
 	Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
 	Local $aWinPos = WinGetPos($hWnd)
@@ -148,45 +148,64 @@ Func send_sxy(); Check value of ShareX border color.  If yellow, change to red. 
 	HotKeySet($kb_sxy, "send_sxy") ; reactivate it
 EndFunc
 
-Func send_sxb(); Check value of ShareX border size.  If 5, change to 1.  Otherwise, change to 5.
-	HotKeySet($kb_sxb) ; deactivate the hotkey in case the user presses it too long
+Func send_sxb()
+    ;~ Local Const $offSet = 415 + 50 ; This line was missing in the previous response
+    Local Const $offSet = 415 ; This line was missing in the previous response
 
-	Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
-	Local $aWinPos = WinGetPos($hWnd)
-	Local Const $iSZ = $aWinPos[3] / 2 ; - 16
-	;Local $aArea[] = [1325, 24, 1378, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
-	Local $aArea[] = [1325, 24, 1410, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
-	Local $SearchColor = 0x778797 ;This is one color in the 'Tool options' button, that should not be in the second button in the search area.
-	Local $aCoord = PixelSearch($aArea[0], $aArea[1], $aArea[2], $aArea[3], $SearchColor, 6); Find the exact coordinate of the pixel containing the above color.
-	Local Const $offSet = 415 + 50
-	If @error Then
-		ConsoleWrite("! Error X and Y" & @CRLF)
-	Else
-		ConsoleWrite("Pixel Found at  X and Y are: " & $aCoord[0] & "," & $aCoord[1] & @CRLF)
-		If $aCoord[0] > 1375 Then ; I guess +70 for you = 1370
-			$sActiveTool = "Rectangle"
-		Else
-			$sActiveTool = "Arrow"
-		EndIf
-		ConsoleWrite("$sActiveTool: " & $sActiveTool & @CRLF)
-	EndIf
+    HotKeySet($kb_sxb) ; Deactivate the hotkey in case the user presses it too long
+    ConsoleWrite('Start ShareX border width kb shortcut.' & @CRLF)
 
-	; Click the pixel corresponding to Tool options button.
-	Local $controlClick = ControlClick($hWnd, "", "WindowsForms10.Window.8.app.0.1a52015_r6_ad11", "left", 1, $aCoord[0]-$offSet, $iSZ)
-	ConsoleWrite("$controlClick: " & $controlClick & @CRLF)
+    Local $hWnd = WinWait("ShareX - Editor menu", "", 3)
+    ConsoleWrite('Window handle: ' & $hWnd & @CRLF)
 
-	Local $iBorderSize = Int(ControlGetText("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11"))
+    Local $aWinPos = WinGetPos($hWnd)
+    ConsoleWrite('Window position: ' & 'Left=' & $aWinPos[0] & ', Top=' & $aWinPos[1] & ', Right=' & $aWinPos[2] & ', Bottom=' & $aWinPos[3] & @CRLF)
+
+    Local Const $iSZ = $aWinPos[3] / 2 ; - 16
+    ConsoleWrite('iSZ (half of window height): ' & $iSZ & @CRLF)
+
+    Local $aArea[] = [1325, 24, 1410, 46] ;SearchArea left,top,right,bottom. This is an area on screen that will always contain the 'Tool options' button, regardless of whether the shape is rectangle or arrow.  In either case, the area will also contain a second button.
+    Local $SearchColor = 0x778797 ;This is one color in the 'Tool options' button, that should not be in the second button in the search area.
+    Local $aCoord = PixelSearch($aArea[0], $aArea[1], $aArea[2], $aArea[3], $SearchColor, 6); Find the exact coordinate of the pixel containing the above color.
+
+    ConsoleWrite('Searching for pixel...' & @CRLF)
+    If @error Then
+        ConsoleWrite("! Error X and Y" & @CRLF)
+    Else
+        ConsoleWrite("Pixel Found at X and Y are: " & $aCoord[0] & "," & $aCoord[1] & @CRLF)
+        If $aCoord[0] > 1375 Then
+            $sActiveTool = "Rectangle"
+        Else
+            $sActiveTool = "Arrow"
+        EndIf
+        ConsoleWrite("$sActiveTool: " & $sActiveTool & @CRLF)
+    EndIf
+
+    ; Click the pixel corresponding to the Tool options button.
+    ConsoleWrite('Clicking pixel...' & @CRLF)
+	Local $controlClick = ControlClick($hWnd, "", ControlGetHandle($hWnd, "", "[REGEXPCLASS:WindowsForms10\.Window\.8\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]"), "left", 1, $aCoord[0]-$offSet, $iSZ)
+    ConsoleWrite("$controlClick: " & $controlClick & @CRLF)
+
+	Local $iBorderSize = Int(ControlGetText("[REGEXPCLASS:WindowsForms10\.Window\.20808\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]", "", "[REGEXPCLASS:WindowsForms10\.EDIT\.app\.0\.[a-z0-9]{7}_r\d+_ad\d+]"))
+	
 	ConsoleWrite("$iBorderSize: " & $iBorderSize & @CRLF)
-	Local $controlSetText
-	If $iBorderSize = 5 Then
-		$controlSetText = ControlSetText("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11", "1")
-	Else
-		$controlSetText = ControlSetText("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11", "5")
-	EndIf
-	Local $controlSend = ControlSend("[CLASS:WindowsForms10.Window.20808.app.0.1a52015_r6_ad1]", "", "WindowsForms10.EDIT.app.0.1a52015_r6_ad11", "{TAB}{ESC}")
-	ConsoleWrite("$controlSend: " & $controlSend & @CRLF)
-	HotKeySet($kb_sxb, "send_sxb"); reactivate it
+
+    Local $controlSetText
+    If $iBorderSize = 5 Then
+      $controlSetText = ControlSetText("[REGEXPCLASS:WindowsForms10\.Window\.20808\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]", "", "[REGEXPCLASS:WindowsForms10\.EDIT\.app\.0\.[a-z0-9]{7}_r\d+_ad\d+]", "1")
+    Else
+      $controlSetText = ControlSetText("[REGEXPCLASS:WindowsForms10\.Window\.20808\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]", "", "[REGEXPCLASS:WindowsForms10\.EDIT\.app\.0\.[a-z0-9]{7}_r\d+_ad\d+]", "5")
+    EndIf
+
+    ConsoleWrite("$controlSetText: " & $controlSetText & @CRLF)
+
+    Local $controlSend = ControlSend("[REGEXPCLASS:WindowsForms10\.Window\.20808\.app\.0\.[a-z0-9]{7}_r\d+_ad\d*]", "", "[REGEXPCLASS:WindowsForms10\.EDIT\.app\.0\.[a-z0-9]{7}_r\d+]", "{TAB}{ESC}")
+    ConsoleWrite("$controlSend: " & $controlSend & @CRLF)
+
+    HotKeySet($kb_sxb, "send_sxb") ; Reactivate the hotkey
 EndFunc
+
+
 
 Func send_rgx()
 	HotKeySet($kb_rgx) ; deactivate the hotkey in case the user presses it too long
