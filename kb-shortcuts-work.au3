@@ -31,7 +31,7 @@ EndFunc
 
 Func send_uri()
 	HotKeySet($kb_uri) ; deactivate the hotkey in case the user presses it too long
-	Send("understand issue")
+	Send("understand requirements")
 	HotKeySet($kb_uri, "send_uri") ; reactivate it
  EndFunc
 
@@ -87,7 +87,7 @@ Func out_task_ticket()
 	Sleep(200)
 	SendEx($repliconAccount & "{ENTER}")
 	Sleep(200)
-	SendEx("Understand Issue{ENTER}")
+	SendEx("Understand Issue/Requirements{ENTER}")
 	SendEx("Repro{ENTER}{TAB}" & $sgCode & "{ENTER}{ENTER}")
     Sleep(200)
 	SendEx("Debug{ENTER}{TAB}")
