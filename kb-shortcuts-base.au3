@@ -15,6 +15,8 @@ Local $kb_out_task = "!^p"; define keyboard shortcut to create Outlook task. Use
 Local $kb_sxy = "!^k"; define keyboard shortcut to toggle ShareX border color between red and yellow. Uses ctrl+alt+k.
 Local $kb_sxb = "!^v"; define keyboard shortcut to toggle ShareX border size between 1 and 5. Uses ctrl+alt+v.
 Local $kb_rgx = "!^g"; define keyboard shortcut to insert multi-search regex. Uses ctrl+alt+g.
+Local $kb_gpt = "!^h"; define keyboard shortcut to insert ChatGPT text. Uses ctrl+alt+h.
+
 
 HotKeySet($kb_sal, "send_sal")
 HotKeySet($kb_sau, "send_sau")
@@ -30,7 +32,7 @@ HotKeySet($kb_out_task, "out_task")
 HotKeySet($kb_sxy, "send_sxy")
 HotKeySet($kb_sxb, "send_sxb")
 HotKeySet($kb_rgx, "send_rgx")
-
+HotKeySet($kb_gpt, "send_gpt")
 
 While 1
     Sleep(100)
@@ -205,10 +207,14 @@ Func send_sxb()
     HotKeySet($kb_sxb, "send_sxb") ; Reactivate the hotkey
 EndFunc
 
-
-
 Func send_rgx()
 	HotKeySet($kb_rgx) ; deactivate the hotkey in case the user presses it too long
 	Send("(grid[\s\S\n]*ow6)|(ow6[\s\S\n]*grid)"); Send text to the active window.
 	HotKeySet($kb_rgx, "send_rgx") ; reactivate it
+EndFunc
+
+Func send_gpt()
+	HotKeySet($kb_gpt) ; deactivate the hotkey in case the user presses it too long
+	Send("My code is below. For now simply understand it. Do not comment or explain. Await my instruction."); Send text to the active window.
+	HotKeySet($kb_gpt, "send_gpt") ; reactivate it
 EndFunc
